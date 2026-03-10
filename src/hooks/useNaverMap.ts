@@ -129,14 +129,14 @@ export function useNaverMap(containerId: string) {
               <div style="
                 min-width: 280px;
                 max-width: 320px;
-                background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+                background: linear-gradient(135deg, #FAF8F5 0%, #F0EBE0 100%);
                 border-radius: 16px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 8px 16px rgba(0,0,0,0.1);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.10), 0 8px 16px rgba(0,0,0,0.06);
                 overflow: hidden;
                 font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
               ">
                 <div style="
-                  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+                  background: linear-gradient(135deg, #7D6B5C 0%, #9A8574 100%);
                   padding: 20px 24px;
                   position: relative;
                   overflow: hidden;
@@ -200,14 +200,14 @@ export function useNaverMap(containerId: string) {
                     <div style="
                       width: 32px;
                       height: 32px;
-                      background: #eff6ff;
+                      background: #E5E0D2;
                       border-radius: 8px;
                       display: flex;
                       align-items: center;
                       justify-content: center;
                       flex-shrink: 0;
                     ">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="#3b82f6">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="#5E5046">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                       </svg>
                     </div>
@@ -215,7 +215,7 @@ export function useNaverMap(containerId: string) {
                       <div style="
                         font-size: 11px;
                         font-weight: 600;
-                        color: #94a3b8;
+                        color: #B69D8A;
                         text-transform: uppercase;
                         letter-spacing: 0.3px;
                         margin-bottom: 4px;
@@ -223,7 +223,7 @@ export function useNaverMap(containerId: string) {
                       <p style="
                         margin: 0;
                         font-size: 14px;
-                        color: #334155;
+                        color: #5E5046;
                         line-height: 1.5;
                         font-weight: 500;
                       ">${hospital.address}</p>
@@ -235,17 +235,17 @@ export function useNaverMap(containerId: string) {
                     align-items: center;
                     gap: 6px;
                     padding: 8px 14px;
-                    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+                    background: linear-gradient(135deg, #F0EBE0 0%, #E5E0D2 100%);
                     border-radius: 20px;
-                    border: 1px solid #bfdbfe;
+                    border: 1px solid #C6BEAF;
                   ">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#2563eb">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#5E5046">
                       <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                     </svg>
                     <span style="
                       font-size: 12px;
                       font-weight: 600;
-                      color: #1d4ed8;
+                      color: #5E5046;
                     ">온담본부 인하우스 운영</span>
                   </div>
                 </div>
@@ -271,10 +271,10 @@ export function useNaverMap(containerId: string) {
               content: `<div style="
                 width: 44px;
                 height: 44px;
-                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                background: linear-gradient(135deg, #9A8574 0%, #7D6B5C 100%);
                 border-radius: 50%;
                 border: 3px solid white;
-                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+                box-shadow: 0 4px 12px rgba(125, 107, 92, 0.4);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -323,6 +323,9 @@ export function useNaverMap(containerId: string) {
           activeInfoWindowRef.current = defaultInfoWindow
         }
 
+        // 이벤트 리스너 정리를 위한 참조 저장
+        const cleanupFns: (() => void)[] = []
+
         // 모바일에서 한 손가락 터치 시 지도 드래그 비활성화 + 오버레이 표시
         if (isMobile) {
           // 초기에 지도 드래그 비활성화
@@ -356,6 +359,11 @@ export function useNaverMap(containerId: string) {
 
           container.addEventListener('touchstart', handleTouchStart, { passive: true })
           container.addEventListener('touchend', handleTouchEnd, { passive: true })
+
+          cleanupFns.push(() => {
+            container.removeEventListener('touchstart', handleTouchStart)
+            container.removeEventListener('touchend', handleTouchEnd)
+          })
         } else {
           // PC에서 지도 클릭 후 스크롤로 확대/축소
           const handleMapClick = () => {
@@ -388,9 +396,25 @@ export function useNaverMap(containerId: string) {
           container.addEventListener('click', handleMapClick)
           container.addEventListener('wheel', handleWheel, { passive: true })
           document.addEventListener('click', handleDocumentClick)
+
+          cleanupFns.push(() => {
+            container.removeEventListener('click', handleMapClick)
+            container.removeEventListener('wheel', handleWheel)
+            document.removeEventListener('click', handleDocumentClick)
+          })
         }
 
         setIsLoaded(true)
+
+        // 정리 함수 반환
+        return () => {
+          cleanupFns.forEach(fn => fn())
+          if (overlayTimeoutRef.current) {
+            clearTimeout(overlayTimeoutRef.current)
+          }
+          markersRef.current.forEach(({ marker }) => marker.setMap(null))
+          markersRef.current = []
+        }
       } catch (err) {
         setError('지도를 초기화하는 중 오류가 발생했습니다.')
         console.error(err)

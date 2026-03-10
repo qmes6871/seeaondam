@@ -134,32 +134,46 @@ export function RecruitPage() {
 
   return (
     <div className="pt-16 lg:pt-20">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 py-20 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full -translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-white rounded-full translate-x-1/3 translate-y-1/3" />
+      {/* Hero Section - 통일된 스타일 */}
+      <section className="relative h-[calc(100vh-128px)] lg:h-[calc(100vh-160px)] flex items-center overflow-hidden">
+        {/* 배경 */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-900/30 to-gray-900/95" />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-transparent to-transparent" />
         </div>
-        <div ref={heroRef} className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white/90 text-sm font-medium mb-6">
-            We're Hiring
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
-            함께 성장할 인재를 찾습니다
-          </h1>
-          <p className="text-lg lg:text-xl text-white/80 max-w-3xl mx-auto leading-relaxed mb-8">
-            온담본부에서 새로운 도전을 시작하세요.<br />
-            당신의 열정이 빛날 수 있는 곳입니다.
-          </p>
-          <Link
-            to="/apply"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-primary-700 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-          >
-            지금 지원하기
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
+        {/* 왼쪽 상단 원형 장식 */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gray-700/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
+        {/* 우측 하단 원형 장식 */}
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gray-600/25 rounded-full translate-x-1/3 translate-y-1/3" />
+
+        <div ref={heroRef} className="relative w-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 pt-20 flex justify-end">
+          <div className="max-w-2xl text-right">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-primary-400 text-sm font-medium mb-8 border border-white/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary-400" />
+              We're Hiring
+            </span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-8 leading-tight">
+              함께 성장할 인재를 찾습니다
+            </h1>
+            <p className="text-base text-gray-300 leading-relaxed mb-12">
+              온담본부에서 새로운 도전을 시작하세요.<br className="hidden sm:block" />
+              당신의 열정이 빛날 수 있는 곳입니다.
+            </p>
+
+            {/* CTA 버튼 */}
+            <div className="pt-8 border-t border-white/10">
+              <Link
+                to="/apply"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-primary-700 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              >
+                지금 지원하기
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
