@@ -137,15 +137,13 @@ export function RecruitPage() {
       {/* Hero Section - 통일된 스타일 */}
       <section className="relative h-[calc(100vh-128px)] lg:h-[calc(100vh-160px)] flex items-center overflow-hidden">
         {/* 배경 */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900" />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-900/30 to-gray-900/95" />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-transparent to-transparent" />
-        </div>
+        <div className="absolute inset-0 bg-[#847466]" />
+        {/* Dot Pattern */}
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(255, 255, 255) 1px, transparent 0px)', backgroundSize: '32px 32px' }} />
         {/* 왼쪽 상단 원형 장식 */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-gray-700/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gray-500/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
         {/* 우측 하단 원형 장식 */}
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gray-600/25 rounded-full translate-x-1/3 translate-y-1/3" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gray-400/10 rounded-full translate-x-1/3 translate-y-1/3" />
 
         <div ref={heroRef} className="relative w-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 pt-20 flex justify-end">
           <div className="max-w-2xl text-right">

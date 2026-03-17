@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -101,6 +102,19 @@ export function AgentBenefitsSection() {
               <p className="text-white/60 leading-relaxed">{benefit.description}</p>
             </div>
           ))}
+        </div>
+
+        {/* 더보기 버튼 */}
+        <div className="text-center mt-12">
+          <Link
+            to="/agent-benefits"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-full transition-all duration-300 border border-white/20 hover:border-white/40"
+          >
+            설계사 혜택 더보기
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
 
       </div>

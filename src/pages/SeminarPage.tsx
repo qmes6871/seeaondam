@@ -38,6 +38,7 @@ const seminarFaqs = [
 
 export function SeminarPage() {
   const heroRef = useRef<HTMLDivElement>(null)
+  const sectionsRef = useRef<HTMLDivElement>(null)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [isMapLoaded, setIsMapLoaded] = useState(false)
 
@@ -265,24 +266,45 @@ export function SeminarPage() {
   }, [])
 
   useEffect(() => {
-    // Hero animation only - simpler approach
-    if (heroRef.current) {
-      gsap.fromTo(
-        heroRef.current.children,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' }
-      )
-    }
+    const ctx = gsap.context(() => {
+      // Hero animation
+      if (heroRef.current) {
+        gsap.fromTo(
+          heroRef.current.children,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' }
+        )
+      }
 
-    // Clean up all ScrollTriggers on unmount
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-    }
+      // Sections animation - 아래에서 위로 올라오는 효과
+      if (sectionsRef.current) {
+        const sections = sectionsRef.current.querySelectorAll('.animate-section')
+        sections.forEach((section) => {
+          gsap.fromTo(
+            section,
+            { opacity: 0, y: 60 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+                once: true,
+              },
+            }
+          )
+        })
+      }
+    })
+
+    return () => ctx.revert()
   }, [])
 
 
   return (
-    <div className="pt-16 lg:pt-20">
+    <div ref={sectionsRef} className="pt-16 lg:pt-20">
       {/* Hero Section */}
       <section className="relative h-[calc(100vh-128px)] lg:h-[calc(100vh-160px)] flex items-center overflow-hidden">
         {/* 배경 */}
@@ -291,14 +313,9 @@ export function SeminarPage() {
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: "url('/images/hero-hospital.png')" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-900/30 to-gray-900/95" />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#847466]/30 to-[#847466]/95" />
         </div>
-        {/* 왼쪽 상단 원형 장식 */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-gray-700/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
-        {/* 우측 하단 원형 장식 */}
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gray-600/25 rounded-full translate-x-1/3 translate-y-1/3" />
-
+        
         <div ref={heroRef} className="relative w-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 pt-20 flex justify-end">
           <div className="max-w-2xl text-right">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-primary-400 text-sm font-medium mb-8 border border-white/20">
@@ -331,20 +348,18 @@ export function SeminarPage() {
       </section>
 
       {/* 두 번째 섹션 - 보험 영업 질문 */}
-      <section className="relative">
+      <section className="relative animate-section">
         {/* 상단 - 이미지 + 텍스트 */}
         <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* 왼쪽 이미지 */}
-          <div className="relative h-[350px] lg:h-[480px] overflow-hidden">
+          <div className="relative h-[350px] lg:h-[480px] overflow-hidden bg-[#F3EDE7]">
             <img
               src="/images/gallery/ondam-gallery-2.jpeg"
               alt="상담 이미지"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover opacity-70"
             />
-            {/* 이미지 오버레이 그라데이션 */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-            <div className="absolute inset-0 bg-[#f5f3ef]/40 lg:bg-[#f5f3ef]/50" />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#f5f3ef]/90" />
+            {/* 이미지 오버레이 */}
+            <div className="absolute inset-0 bg-[#FFF5DF]/50" />
           </div>
           {/* 오른쪽 텍스트 */}
           <div className="relative flex items-center px-8 lg:px-16 py-14 lg:py-0 overflow-hidden">
@@ -376,13 +391,10 @@ export function SeminarPage() {
         </div>
 
         {/* 하단 - 시어에셋 온담본부 */}
-        <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-20 lg:py-28 overflow-hidden">
+        <div className="relative bg-[#9A8574] py-20 lg:py-28 overflow-hidden">
           {/* 배경 패턴 */}
           <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-          {/* 장식 요소 */}
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-primary-400/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
-
+          
           <div className="relative max-w-7xl mx-auto px-8 lg:px-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
               {/* 왼쪽 타이틀 */}
@@ -392,7 +404,7 @@ export function SeminarPage() {
                 </span>
                 <h3 className="text-3xl lg:text-[40px] font-bold text-white leading-tight tracking-tight">
                   시어에셋 온담본부는<br />
-                  <span className="text-primary-400">다릅니다</span>
+                  <span className="text-[#F7E9CB]">다릅니다</span>
                 </h3>
               </div>
 
@@ -402,9 +414,9 @@ export function SeminarPage() {
                 <div className="pl-8">
                   <p className="text-xl lg:text-2xl font-bold text-white mb-4 leading-snug">
                     도움에서 상담이 시작되는<br />
-                    <span className="text-primary-400">구조</span>를 만듭니다
+                    <span className="text-[#F7E9CB]">구조</span>를 만듭니다
                   </p>
-                  <p className="text-gray-400 text-base lg:text-lg leading-relaxed">
+                  <p className="text-gray-300 text-base lg:text-lg leading-relaxed">
                     시어에셋 온담본부는 보험을 설계하지만,<br />
                     <span className="font-medium text-gray-300">영업보다 상담을, 판매보다 도움을 먼저 생각합니다.</span>
                   </p>
@@ -416,7 +428,7 @@ export function SeminarPage() {
       </section>
 
       {/* 참석자 후기 섹션 */}
-      <section className="py-20 lg:py-28 bg-gradient-to-br from-primary-50/50 via-white to-gray-50 overflow-hidden">
+      <section className="py-20 lg:py-28 bg-gradient-to-br from-primary-50/50 via-white to-gray-50 overflow-hidden animate-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* 왼쪽 - 폰 목업 */}
@@ -562,7 +574,7 @@ export function SeminarPage() {
       </section>
 
       {/* 시어에셋 온담본부는 다릅니다 섹션 */}
-      <section className="relative py-24 lg:py-32 overflow-hidden">
+      <section className="relative py-24 lg:py-32 overflow-hidden animate-section">
         {/* 배경 */}
         <div className="absolute inset-0 bg-gray-50" />
         {/* 우측 상단 장식 */}
@@ -649,7 +661,7 @@ export function SeminarPage() {
       </section>
 
       {/* 온담본부가 약속합니다 섹션 */}
-      <section className="relative py-24 lg:py-32 overflow-hidden">
+      <section className="relative py-24 lg:py-32 overflow-hidden animate-section">
         {/* 배경 */}
         <div className="absolute inset-0" style={{ backgroundColor: '#f5f3ef', backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
         {/* 장식 요소 */}
@@ -722,7 +734,7 @@ export function SeminarPage() {
       </section>
 
       {/* 협력 병원 지도 섹션 */}
-      <section className="py-16 lg:py-24 bg-gray-50 overflow-hidden">
+      <section className="py-16 lg:py-24 bg-gray-50 overflow-hidden animate-section">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden shadow-2xl">
             {/* 왼쪽 - 통계 및 병원 리스트 */}
@@ -808,7 +820,7 @@ export function SeminarPage() {
       </section>
 
       {/* FAQ Section - Glassmorphism Style */}
-      <section className="relative py-20 lg:py-32 overflow-hidden">
+      <section className="relative py-20 lg:py-32 overflow-hidden animate-section">
         {/* Background with subtle gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30" />
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-primary-100/40 via-transparent to-transparent rounded-full blur-3xl" />
@@ -891,7 +903,7 @@ export function SeminarPage() {
       </section>
 
       {/* CTA Section with Form */}
-      <section id="seminar-cta" className="relative min-h-[600px] lg:min-h-[700px] overflow-hidden">
+      <section id="seminar-cta" className="relative min-h-[600px] lg:min-h-[700px] overflow-hidden animate-section">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>명예의 전당</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #8B7355;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* 섹션 헤더 */
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      color: #fff;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 16px;
+    }
+
+    /* 카드 컨테이너 */
+    .cards-container {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 1200px;
+    }
+
+    /* 카드 */
+    .award-card {
+      width: 280px;
+      height: 420px;
+      background: #3d2e1e;
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .award-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Shimmer 효과 */
+    .award-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(201, 162, 39, 0.1),
+        transparent
+      );
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      50%, 100% { left: 100%; }
+    }
+
+    /* 카드 상단 헤더 */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .card-logo {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 2px;
+    }
+
+    .card-number {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    /* 트로피 영역 */
+    .trophy-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .trophy-wrapper {
+      position: relative;
+      width: 160px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 트로피 글로우 효과 */
+    .trophy-glow {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+
+    .trophy-img {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+      filter:
+        drop-shadow(0 0 10px rgba(255, 215, 0, 0.5))
+        drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))
+        drop-shadow(0 8px 16px rgba(184, 134, 11, 0.3));
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .award-card:hover .trophy-img {
+      transform: scale(1.05);
+      filter:
+        drop-shadow(0 0 15px rgba(255, 215, 0, 0.7))
+        drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4))
+        drop-shadow(0 12px 24px rgba(184, 134, 11, 0.4));
+    }
+
+    /* 카드 하단 정보 */
+    .card-info {
+      text-align: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(201, 162, 39, 0.2);
+    }
+
+    .award-category {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .award-grade {
+      background: linear-gradient(135deg, #FFD700, #c9a227, #FFD700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .award-date {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    /* 반응형 */
+    @media (max-width: 900px) {
+      .cards-container {
+        gap: 20px;
+      }
+
+      .award-card {
+        width: 260px;
+        height: 400px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .section-title {
+        font-size: 28px;
+      }
+
+      .cards-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .award-card {
+        width: 100%;
+        max-width: 320px;
+        height: auto;
+        min-height: 380px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 섹션 헤더 -->
+  <div class="section-header">
+    <span class="section-badge">AWARDS</span>
+    <h2 class="section-title">명예의 전당</h2>
+    <p class="section-subtitle">온담본부의 성과와 업적</p>
+  </div>
+
+  <!-- 카드 컨테이너 -->
+  <div class="cards-container">
+    <!-- 카드 1 -->
+    <div class="award-card">
+      <div class="card-header">
+        <span class="card-logo">ONDAM</span>
+        <span class="card-number">09</span>
+      </div>
+      <div class="trophy-container">
+        <div class="trophy-wrapper">
+          <div class="trophy-glow"></div>
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3112/3112946.png"
+            alt="Trophy"
+            class="trophy-img"
+          >
+        </div>
+      </div>
+      <div class="card-info">
+        <p class="award-category">신인 육성</p>
+        <p class="award-grade">최우수</p>
+        <p class="award-date">2022.01</p>
+      </div>
+    </div>
+
+    <!-- 카드 2 -->
+    <div class="award-card">
+      <div class="card-header">
+        <span class="card-logo">ONDAM</span>
+        <span class="card-number">10</span>
+      </div>
+      <div class="trophy-container">
+        <div class="trophy-wrapper">
+          <div class="trophy-glow"></div>
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3112/3112946.png"
+            alt="Trophy"
+            class="trophy-img"
+          >
+        </div>
+      </div>
+      <div class="card-info">
+        <p class="award-category">서비스 혁신</p>
+        <p class="award-grade">대상</p>
+        <p class="award-date">2022.01</p>
+      </div>
+    </div>
+
+    <!-- 카드 3 -->
+    <div class="award-card">
+      <div class="card-header">
+        <span class="card-logo">ONDAM</span>
+        <span class="card-number">01</span>
+      </div>
+      <div class="trophy-container">
+        <div class="trophy-wrapper">
+          <div class="trophy-glow"></div>
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3112/3112946.png"
+            alt="Trophy"
+            class="trophy-img"
+          >
+        </div>
+      </div>
+      <div class="card-info">
+        <p class="award-category">MDRT 달성률</p>
+        <p class="award-grade">우수 본부</p>
+        <p class="award-date">2026.01</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

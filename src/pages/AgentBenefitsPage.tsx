@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const benefits = [
   {
@@ -85,6 +88,7 @@ const finalFeatures = [
 
 export function AgentBenefitsPage() {
   const heroRef = useRef<HTMLDivElement>(null)
+  const sectionsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (heroRef.current) {
@@ -94,18 +98,46 @@ export function AgentBenefitsPage() {
         { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' }
       )
     }
+
+    // Sections animation - 아래에서 위로 올라오는 효과
+    const ctx = gsap.context(() => {
+      if (sectionsRef.current) {
+        const sections = sectionsRef.current.querySelectorAll('.animate-section')
+        sections.forEach((section) => {
+          gsap.fromTo(
+            section,
+            { opacity: 0, y: 60 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+                once: true,
+              },
+            }
+          )
+        })
+      }
+    })
+
+    return () => ctx.revert()
   }, [])
 
   return (
-    <div className="pt-16 lg:pt-20">
+    <div ref={sectionsRef} className="pt-16 lg:pt-20">
       {/* Hero Section */}
       <section className="relative h-[calc(100vh-128px)] lg:h-[calc(100vh-160px)] flex items-center overflow-hidden">
         {/* 배경 */}
         <div className="absolute inset-0 bg-[#847466]" />
         {/* Dot Pattern */}
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(255, 255, 255) 1px, transparent 0px)', backgroundSize: '32px 32px' }} />
-        {/* 그라데이션 오버레이 */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#847466]/50 via-transparent to-transparent" />
+        {/* 왼쪽 상단 원형 장식 */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gray-500/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
+        {/* 우측 하단 원형 장식 */}
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gray-400/10 rounded-full translate-x-1/3 translate-y-1/3" />
 
         <div ref={heroRef} className="relative w-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 pt-20">
           <div className="max-w-2xl ml-auto text-right">
@@ -127,7 +159,7 @@ export function AgentBenefitsPage() {
       </section>
 
       {/* Intro Section */}
-      <section className="py-16 lg:py-20 bg-white">
+      <section className="py-16 lg:py-20 bg-white animate-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 text-primary-700 text-sm font-semibold mb-6 border border-primary-100">
             시어에셋 온담 설계사 혜택
@@ -143,7 +175,7 @@ export function AgentBenefitsPage() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 lg:py-28 bg-gradient-to-b from-slate-50 to-white">
+      <section className="py-20 lg:py-28 bg-gradient-to-b from-slate-50 to-white animate-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -208,52 +240,53 @@ export function AgentBenefitsPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="relative py-20 lg:py-28 overflow-hidden">
+      <section className="relative py-20 lg:py-28 overflow-hidden animate-section">
         {/* 배경 */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700" />
+        <div className="absolute inset-0 bg-primary-600" />
         {/* 배경 패턴 */}
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)', backgroundSize: '32px 32px' }} />
+        <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)', backgroundSize: '32px 32px' }} />
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight">
-            온담 설계사가 되어 <span className="text-primary-200">특별한 혜택</span>을 누리세요
-          </h2>
-          <p className="text-white/80 text-lg mb-10 max-w-3xl mx-auto leading-relaxed">
-            온담본부는 설계사님께 최고의 서비스와 혜택을 제공하기 위해 항상 노력합니다.<br className="hidden sm:block" />
-            지금 바로 상담을 신청하시고 다양한 혜택을 경험해보세요.
-          </p>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+            {/* Left - Text Content */}
+            <div className="flex-1 text-center lg:text-left">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
+                <span className="w-2 h-2 rounded-full bg-primary-400 animate-pulse" />
+                <span className="text-white/80 text-sm font-medium">온담 설계사 혜택</span>
+              </div>
 
-          {/* Features */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {finalFeatures.map((feature, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center gap-2 px-5 py-3 bg-white/10 backdrop-blur-sm rounded-xl text-white border border-white/20"
-              >
-                <svg className="w-5 h-5 text-primary-300" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                {feature}
-              </span>
-            ))}
-          </div>
+              {/* Heading */}
+              <h2 className="text-[27px] sm:text-[33px] lg:text-[45px] font-bold text-white mb-5 leading-tight">
+                온담 설계사가 되어
+                <br />
+                <span className="text-primary-300">특별한 혜택을 누리세요</span>
+              </h2>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="tel:02-1234-5678"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-primary-700 font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              전화 상담하기
-            </a>
-            <a
-              href="/"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/30 transition-all duration-300"
-            >
-              홈으로 돌아가기
-            </a>
+              <p className="text-[14px] sm:text-base text-white/70 mb-8 max-w-md mx-auto lg:mx-0 leading-relaxed">
+                온담본부는 설계사님께<br />
+                최고의 서비스와 혜택을 제공하기 위해 항상 노력합니다.
+              </p>
+            </div>
+
+            {/* Right - Features */}
+            <div className="flex-1 w-full max-w-lg">
+              <div className="space-y-3">
+                {finalFeatures.map((feature, index) => (
+                  <div
+                    key={index}
+                    className="p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center gap-4"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-primary-400/20 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 text-primary-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <span className="text-white font-medium">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>

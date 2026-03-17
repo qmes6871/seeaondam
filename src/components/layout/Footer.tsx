@@ -31,9 +31,8 @@ export function Footer() {
             <ul className="space-y-2">
               {[
                 { path: '/about', label: '온담본부 소개' },
-                { path: '/news', label: '홍보센터' },
-                // { path: '/insurance', label: '보험정보' },
-                { path: '/apply', label: '입사지원' },
+                { path: '/seminar', label: '사업설명회 신청' },
+                { path: '/recruit', label: '인재채용' },
               ].map((link) => (
                 <li key={link.path}>
                   <Link

@@ -473,9 +473,9 @@ export function AboutPage() {
           {/* Dot Pattern */}
           <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(255, 255, 255) 1px, transparent 0px)', backgroundSize: '32px 32px' }} />
           {/* 왼쪽 상단 원형 장식 */}
-          <div ref={leftBlobRef} className="absolute top-0 left-0 w-96 h-96 bg-gray-500/90 rounded-full -translate-x-1/2 -translate-y-1/2" />
+          <div ref={leftBlobRef} className="absolute top-0 left-0 w-96 h-96 bg-gray-500 rounded-full -translate-x-1/2 -translate-y-1/2" />
           {/* 우측 하단 원형 장식 */}
-          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gray-400/15 rounded-full translate-x-1/3 translate-y-1/3" />
+          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gray-400/10 rounded-full translate-x-1/3 translate-y-1/3" />
         </div>
 
         {/* 스크롤 컨텐츠 영역 */}
@@ -957,7 +957,7 @@ export function AboutPage() {
         </section>
 
         {/* 명예의 전당 Section */}
-        <section className="relative py-24 lg:py-32 bg-[#847466] animate-section overflow-hidden">
+        <section className="relative py-24 lg:py-32 bg-[#9A8574] animate-section overflow-hidden">
           {/* Shimmer 오버레이 */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute -inset-full bg-gradient-to-r from-transparent via-[#c9a227]/5 to-transparent animate-[shimmer_4s_infinite] skew-x-12" />

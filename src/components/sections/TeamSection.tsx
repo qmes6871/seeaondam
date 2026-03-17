@@ -168,21 +168,7 @@ export function TeamSection() {
                 </svg>
               </Link>
 
-              {/* Background Image Indicators */}
-              <div className="flex justify-center lg:justify-start gap-2 mt-10">
-                {backgroundImages.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentBgIndex(index)}
-                    className={`h-1.5 rounded-full transition-all duration-500 ${
-                      index === currentBgIndex
-                        ? 'w-8 bg-white/70'
-                        : 'w-1.5 bg-white/30 hover:bg-white/50'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
+                          </div>
 
             {/* Right - Stats Layout */}
             <div className="flex-1 w-full max-w-lg">
